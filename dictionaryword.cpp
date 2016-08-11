@@ -2,7 +2,8 @@
 
 #include <iostream>
 
-DictionaryWord::DictionaryWord(std::string &word, const std::string &baseWord)
+DictionaryWord::DictionaryWord(std::string &word,
+                               const std::string &baseWord)
     : _word (word)
 {
     std::for_each(word.begin(),
@@ -23,4 +24,9 @@ DictionaryWord::DictionaryWord(std::string &word, const std::string &baseWord)
     });
 
     std::cout << std::endl;
+}
+
+char DictionaryWord::operator-(const DictionaryWord &another)
+{
+    return 's';
 }
