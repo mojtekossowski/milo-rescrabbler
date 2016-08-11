@@ -1,6 +1,7 @@
 #include "dictionary.h"
 #include <stdexcept>
 #include <iostream>
+#include <fstream>
 
 Dictionary *Dictionary::dictionarySingleton = nullptr;
 
@@ -18,22 +19,23 @@ void Dictionary::parseDictionary(const std::vector<std::string> &dictionary)
 
     std::for_each(dictionary.begin(),
                   dictionary.end(),
-                  [&] (std::string word)
+                  [&] (const std::string &word)
     {
-        try
-        {
-            if (word.length() <= this->_baseWord.word().length())
-                return;
-
-            auto record = DictionaryWord(word, this->_baseWord);
-            this->_records.insert(std::pair<int, DictionaryWord> (word.size(), std::move(record)));
-            this->_maxWordSize = std::max(this->_maxWordSize, static_cast<int>(word.size()));
-        }
-        catch (...)
-        {
-            // Gotta catch'em all ;D
-        }
+        this->addWordToDictionary(word);
     });
+}
+
+void Dictionary::parseDictionary(const std::string &filepath)
+{
+    std::ifstream istream (filepath);
+    std::string line;
+    while (std::getline(istream, line))
+    {
+        if (line.empty())
+            continue;
+
+        this->addWordToDictionary(line);
+    }
 }
 
 void Dictionary::clearDictionary()
@@ -47,7 +49,6 @@ void Dictionary::run()
     {
         for (int i = this->_maxWordSize; i > this->_baseWord.lenght(); --i)
         {
-            this->_result.clear();
 
             auto lastItem = this->_records.equal_range(i);
 
@@ -55,23 +56,27 @@ void Dictionary::run()
                  it != lastItem.second;
                  it ++)
             {
+                this->_result.clear();
                 auto rWord = ((*it).second);
                 this->_result.push_back(std::pair<char, DictionaryWord*> ('\0', &rWord));
                 this->findAnnagrams(rWord, rWord.lenght() - 1);
             }
         }
+
+        std::cout << "Not Found :(" << std::endl;
     }
     catch (...)
     {
-        std::cout << "Found!" << std::endl;
         auto firstElement = this->_result.back();
-        this->_result.push_back(std::pair<char, DictionaryWord*> (*firstElement.second - this->_baseWord,
-                                                                   &this->_baseWord));
+        std::cout << "Found!" << std::endl;
+        std::cout << this->_baseWord.word() << " + " << *firstElement.second - this->_baseWord << " = ";
         for (auto it = this->_result.rbegin();
              it != this->_result.rend();
              it ++)
         {
-            std::cout << " + " << (*it).first  << " = " << (*it).second->word();
+            std::cout << (*it).second->word();
+            if ((*it).first)
+                std:: cout << " + " << (*it).first  << " = ";
         }
         std::cout << std::endl;
     }
@@ -113,5 +118,22 @@ void Dictionary::findAnnagrams(const DictionaryWord &word, int depth) noexcept (
             findAnnagrams((*it).second, depth - 1);
             this->_result.pop_back();
         }
+    }
+}
+
+void Dictionary::addWordToDictionary(const std::string &word)
+{
+    try
+    {
+        if (word.length() <= this->_baseWord.word().length())
+            return;
+
+        auto record = DictionaryWord(word, this->_baseWord);
+        this->_records.insert(std::pair<int, DictionaryWord> (word.size(), std::move(record)));
+        this->_maxWordSize = std::max(this->_maxWordSize, static_cast<int>(word.size()));
+    }
+    catch (...)
+    {
+        // Gotta catch'em all ;D
     }
 }

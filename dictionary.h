@@ -13,6 +13,7 @@ public:
     static Dictionary *getInstance();
 
     void parseDictionary(const std::vector<std::string> &dictionary);
+    void parseDictionary(const std::string &filepath);
     void clearDictionary();
 
     void run();
@@ -23,6 +24,7 @@ public:
 private:
     Dictionary();
     void findAnnagrams(const DictionaryWord &word, int depth) noexcept (false);
+    void addWordToDictionary(const std::string &word);
 
     static Dictionary *dictionarySingleton;
     std::multimap<int, DictionaryWord> _records;

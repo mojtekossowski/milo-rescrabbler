@@ -11,12 +11,14 @@ int main(int argc, char *argv[])
 
     std::vector<std::string> storedDict = {
         "ail", "tennis", "nails", "desk",
-        "aliens", "table", "engine", "sail"
+        "aliens", "table", "engine", "sail", "ailasndfaf"
     };
 
     auto d = Dictionary::getInstance();
     d->setBaseWord("ail");
-    d->parseDictionary(storedDict);
+    std::cout << "Begin parsing dictionary" << std::endl;
+    d->parseDictionary("/home/mojtek/Projects/milo-rescrabbler/assets/words");
+    std::cout << "Begin Run Algorithm" << std::endl;
     d->run();
 
     return a.exec();
