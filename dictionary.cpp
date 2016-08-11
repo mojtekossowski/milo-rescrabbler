@@ -12,7 +12,10 @@ Dictionary *Dictionary::getInstance()
 
 void Dictionary::parseDictionary(const std::vector<std::string> &dictionary)
 {
-    std::for_each(dictionary.begin(), dictionary.end(), [&] (std::string word){
+    std::for_each(dictionary.begin(),
+                  dictionary.end(),
+                  [&] (std::string word)
+    {
         this->_records.insert(std::pair<int, DictionaryWord> (word.size(), DictionaryWord(word, "")));
     });
 }
