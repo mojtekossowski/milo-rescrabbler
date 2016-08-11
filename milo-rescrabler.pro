@@ -3,7 +3,7 @@ QT -= gui
 
 CONFIG += c++11
 
-TARGET = anagramy
+TARGET = milo-rescrabler
 CONFIG += console
 CONFIG -= app_bundle
 
