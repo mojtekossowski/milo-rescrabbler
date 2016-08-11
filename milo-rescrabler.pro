@@ -11,8 +11,10 @@ TEMPLATE = app
 
 SOURCES += main.cpp \
     dictionaryword.cpp \
-    dictionary.cpp
+    dictionary.cpp \
+    lettersstack.cpp
 
 HEADERS += \
     dictionaryword.h \
-    dictionary.h
+    dictionary.h \
+    lettersstack.h

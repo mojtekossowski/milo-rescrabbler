@@ -3,6 +3,7 @@
 
 #include <QtCore/qglobal.h>
 #include <map>
+#include <list>
 
 #include "dictionaryword.h"
 
@@ -11,19 +12,23 @@ class Dictionary
 public:
     static Dictionary *getInstance();
 
-    void parseDictionary (const std::vector<std::string> &dictionary);
-
+    void parseDictionary(const std::vector<std::string> &dictionary);
     void clearDictionary();
 
-    std::string getBaseWord() const;
-    void setBaseWord(const std::string &baseWord);
+    void run();
+
+    DictionaryWord &baseWord();
+    void setBaseWord(const std::string &word);
 
 private:
     Dictionary();
+    void findAnnagrams(const DictionaryWord &word, int depth) noexcept (false);
+
     static Dictionary *dictionarySingleton;
     std::multimap<int, DictionaryWord> _records;
-    std::string _baseWord;
-    unsigned int _baseWordSize;
+    DictionaryWord _baseWord;
+    std::list<std::pair<char, DictionaryWord*>> _result;
+    int _maxWordSize;
 };
 
 #endif // DICTIONARY_H

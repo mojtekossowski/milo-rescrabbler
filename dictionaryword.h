@@ -4,17 +4,31 @@
 #include <QtCore/qglobal.h>
 #include <map>
 
+#include "lettersstack.h"
+
 class DictionaryWord
 {
 public:
-explicit DictionaryWord(std::string &word,
-                        const std::string &baseWord);
+    explicit DictionaryWord (const std::string &baseWord);
 
-    char operator-(const DictionaryWord &another);
+    DictionaryWord(const std::string &word,
+                   DictionaryWord &baseWord) noexcept (false);
+
+    virtual ~DictionaryWord();
+
+    char operator-(DictionaryWord &another) const;
+
+    std::string &word();
+    void setWord(const std::string &word);
+
+    unsigned int lenght() const;
+
+    LettersStack &stack();
+    void setStack(LettersStack &stack);
 
 private:
     std::string _word;
-    std::map<char, unsigned int> _stackedLetters;
+    LettersStack _stack;
 };
 
 #endif // DICTIONARYWORD_H
