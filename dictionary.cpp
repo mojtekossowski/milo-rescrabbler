@@ -4,8 +4,15 @@
 
 #include "exceptions.h"
 
+//!
+//! \brief Dictionary::dictionarySingleton initialize to nullptr
+//!
 Dictionary *Dictionary::dictionarySingleton = nullptr;
 
+//!
+//! \brief Dictionary::getInstance instance not existst -> create (Singleton pattern)
+//! \return
+//!
 Dictionary *Dictionary::getInstance()
 {
     if (!dictionarySingleton)
@@ -14,6 +21,10 @@ Dictionary *Dictionary::getInstance()
     return dictionarySingleton;
 }
 
+//!
+//! \brief Dictionary::parseDictionary method parses basic task dictionary
+//! \param dictionary task dictionary
+//!
 void Dictionary::parseDictionary(const std::vector<std::string> &dictionary)
 {
     std::cout << "Loading standard task dictionary" << std::endl;
@@ -26,6 +37,10 @@ void Dictionary::parseDictionary(const std::vector<std::string> &dictionary)
     });
 }
 
+//!
+//! \brief Dictionary::parseDictionary
+//! \param filepath
+//!
 void Dictionary::parseDictionary(const std::string &filepath)
 {
     std::cout << "Begin loading dictionary from " << filepath << "..." << std::endl;
@@ -48,6 +63,12 @@ void Dictionary::clearDictionary()
 
 void Dictionary::run()
 {
+    auto root = this->_records.begin();
+    if (this->_baseWord.lenght() != (*root).first)
+    {
+        std::cout << std::endl << "Base word is not present :(" << std::endl << std::endl;
+        return;
+    }
     try
     {
         for (unsigned long i = this->_maxWordSize; i > this->_baseWord.lenght(); --i)
@@ -60,7 +81,7 @@ void Dictionary::run()
                  it ++)
             {
                 this->_result.clear();
-                auto pWord = (&(*it).second);
+                auto pWord = &(*it).second;
                 this->_result.push_back(std::pair<char, DictionaryWord*> ('\0', pWord));
                 this->findAnnagrams(pWord, pWord->lenght() - 1);
             }
@@ -71,8 +92,10 @@ void Dictionary::run()
     catch (anagram_found_exception &)
     {
         auto firstElement = this->_result.back();
+
         std::cout << std::endl << "Found!" << std::endl << std::endl;
         std::cout << this->_baseWord.word() << " + " << *firstElement.second - this->_baseWord << " = ";
+
         for (auto it = this->_result.rbegin();
              it != this->_result.rend();
              it ++)
@@ -81,6 +104,7 @@ void Dictionary::run()
             if ((*it).first)
                 std:: cout << " + " << (*it).first  << " = ";
         }
+
         std::cout << std::endl;
     }
 }
@@ -128,8 +152,14 @@ void Dictionary::addWordToDictionary(const std::string &word)
 {
     try
     {
-        if (word.length() <= this->_baseWord.word().length())
+        if (word.length() < this->_baseWord.word().length())
             return;
+
+        if ((word.length() == this->_baseWord.word().length()))
+        {
+            if (word != this->_baseWord.word())
+                return;
+        }
 
         auto record = DictionaryWord(word, this->_baseWord);
         this->_records.insert(std::pair<int, DictionaryWord> (word.size(), std::move(record)));

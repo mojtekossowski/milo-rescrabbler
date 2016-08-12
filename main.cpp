@@ -86,6 +86,7 @@ int main(int argc, char *argv[])
 
     std::cout << "Running algorithm..." << std::endl;
     d->run();
+
     auto t1 = std::chrono::high_resolution_clock::now();
     auto dt = std::chrono::duration_cast<std::chrono::milliseconds>(t1-t0).count();
 

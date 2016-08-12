@@ -10,12 +10,12 @@ public:
     explicit LettersStack(const std::string &word);
 
     std::map<char, unsigned int> &stackedLetters();
-    void setStackedLetters(std::map<char, unsigned int> &stackedLetters);
 
     bool contains (LettersStack &another);
     char operator-(LettersStack &another) const;
 
 private:
+    // Map which contains occurance of all letters
     std::map<char, unsigned int> _stackedLetters;
 };
 

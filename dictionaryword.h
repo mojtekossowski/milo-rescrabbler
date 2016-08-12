@@ -17,12 +17,8 @@ public:
     char operator-(DictionaryWord &another) const;
 
     std::string &word();
-    void setWord(const std::string &word);
-
     unsigned long lenght() const;
-
     LettersStack &stack();
-    void setStack(LettersStack &stack);
 
 private:
     std::string _word;

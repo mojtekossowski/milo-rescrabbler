@@ -12,7 +12,7 @@ public:
 class anagram_not_matched : std::exception
 {
 public:
-    virtual const char* what() const noexcept {return "Not matching";}
+    virtual const char* what() const noexcept {return "Not matching.";}
 };
 
 
