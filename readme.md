@@ -8,8 +8,11 @@ An anagram derivation is a N-letter word derived from a N-1 letter word by addin
 
 ### Algorithm
 Rescrabler algorithm can be divided into 3 parts:
+
 1. Creation of dictionary of matching words to the beginning word (each record is stored in a multimap of (int, WordDictionary). WordDictionary conains a map of occuring letters (LettersStack), which contains a number of each letter occurance.
+
 2. Iteration through the multimap in descending order (longest word first). If the solution for the largest number of letters was not found, algorithm will reset the result stack and will begin to iterate.
+
 3. Recursive call of findAnnagrams method with descending depth. Each item's letter stack is compared with the adjacent one. If there's possibility to transit (all letters are covered), the overloaded substraction operators returns the letter which will be removed to obtain the deeper word (with less letters).
 
 If number of letters of beginning word matches currently processing word, the algorithm is stopped.
