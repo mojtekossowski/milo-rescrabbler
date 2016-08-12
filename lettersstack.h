@@ -8,7 +8,6 @@ class LettersStack
 {
 public:
     explicit LettersStack(const std::string &word);
-    virtual ~LettersStack();
 
     std::map<char, unsigned int> &stackedLetters();
     void setStackedLetters(std::map<char, unsigned int> &stackedLetters);

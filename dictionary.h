@@ -23,14 +23,14 @@ public:
 
 private:
     Dictionary();
-    void findAnnagrams(const DictionaryWord &word, int depth) noexcept (false);
+    void findAnnagrams(DictionaryWord *word, unsigned long depth) noexcept (false);
     void addWordToDictionary(const std::string &word);
 
     static Dictionary *dictionarySingleton;
-    std::multimap<int, DictionaryWord> _records;
+    std::multimap<unsigned long, DictionaryWord> _records;
     DictionaryWord _baseWord;
-    std::list<std::pair<char, DictionaryWord*>> _result;
-    int _maxWordSize;
+    std::list<std::pair<char, DictionaryWord*> > _result;
+    unsigned long _maxWordSize;
 };
 
 #endif // DICTIONARY_H

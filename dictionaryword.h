@@ -14,14 +14,12 @@ public:
     DictionaryWord(const std::string &word,
                    DictionaryWord &baseWord) noexcept (false);
 
-    virtual ~DictionaryWord();
-
     char operator-(DictionaryWord &another) const;
 
     std::string &word();
     void setWord(const std::string &word);
 
-    unsigned int lenght() const;
+    unsigned long lenght() const;
 
     LettersStack &stack();
     void setStack(LettersStack &stack);

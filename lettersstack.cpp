@@ -11,11 +11,6 @@ LettersStack::LettersStack(const std::string &word)
     });
 }
 
-LettersStack::~LettersStack()
-{
-    std::cout << "Destroying Letters stack" << std::endl;
-}
-
 std::map<char, unsigned int> &LettersStack::stackedLetters()
 {
     return this->_stackedLetters;
@@ -63,7 +58,6 @@ char LettersStack::operator-(LettersStack &another) const
         tempStack[(*item).first] -= (*item).second;
     }
 
-    std::cout << std::endl;
     for (auto item = tempStack.begin();
          item != tempStack.end();
          item++)
