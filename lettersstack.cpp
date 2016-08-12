@@ -27,6 +27,18 @@ std::map<char, unsigned int> &LettersStack::stackedLetters()
     return this->_stackedLetters;
 }
 
+unsigned int LettersStack::size() const
+{
+    unsigned int size = 0;
+    std::for_each(this->_stackedLetters.begin(),
+                  this->_stackedLetters.end(),
+                  [&](const std::pair<char, unsigned int> &stackInfo)
+    {
+        size += stackInfo.second;
+    });
+    return size;
+}
+
 //!
 //! \brief LettersStack::contains checks if 'this' contain 'another' LetterStack
 //! \param another another LetterStack
@@ -66,7 +78,7 @@ char LettersStack::operator-(LettersStack &another) const
     std::map<char, unsigned int> tempStack = this->_stackedLetters;
 
     // if difference is higher than one - no transition
-    if (this->_stackedLetters.size() - another.stackedLetters().size() != 1)
+    if (this->size() - another.size() != 1)
         return letter;
 
     // iterate through stack

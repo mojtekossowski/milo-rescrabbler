@@ -39,15 +39,12 @@ int main(int argc, char *argv[])
     auto d = Dictionary::getInstance();
     if (beginIndex > 0)
     {
-        if (beginIndex < arguments.size())
-        {
-            std::string word;
-            std::cout << "Enter beginning word: ";
-            std::cin >> word;
+        std::string word;
+        std::cout << "Enter beginning word: ";
+        std::cin >> word;
 
-            t0 = std::chrono::high_resolution_clock::now();
-            d->setBaseWord(word);
-        }
+        t0 = std::chrono::high_resolution_clock::now();
+        d->setBaseWord(word);
     }
     if (defaultIndex > 0)
     {

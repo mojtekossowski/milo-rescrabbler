@@ -11,6 +11,8 @@ public:
 
     std::map<char, unsigned int> &stackedLetters();
 
+    unsigned int size() const;
+
     bool contains (LettersStack &another);
     char operator-(LettersStack &another) const;
 

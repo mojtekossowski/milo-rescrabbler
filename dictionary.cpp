@@ -23,7 +23,7 @@ Dictionary *Dictionary::getInstance()
 
 //!
 //! \brief Dictionary::parseDictionary method parses basic task dictionary
-//! \param dictionary task dictionary
+//! \param dictionary task dictionarys
 //!
 void Dictionary::parseDictionary(const std::vector<std::string> &dictionary)
 {
@@ -37,10 +37,6 @@ void Dictionary::parseDictionary(const std::vector<std::string> &dictionary)
     });
 }
 
-//!
-//! \brief Dictionary::parseDictionary
-//! \param filepath
-//!
 void Dictionary::parseDictionary(const std::string &filepath)
 {
     std::cout << "Begin loading dictionary from " << filepath << "..." << std::endl;
