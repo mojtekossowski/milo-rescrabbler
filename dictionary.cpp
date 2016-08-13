@@ -70,13 +70,19 @@ void Dictionary::clearDictionary()
 //!
 //! \brief Dictionary::run
 //! The algorithm execution method.
-//! Performs #3 stage of algorithm described in readme.md file
+//! Performs #2 stage of algorithm described in readme.md file
 //! \details
-//!
+//! Iteration through the multimap (_records) is performed
+//! in descending order. For each element, the recursive
+//! findAnnagrams function is called with the last longest word
+//! with depth (word_size - 1). For each iteration the _record
+//! list is cleared and filled in.
 //!
 void Dictionary::run()
 {
+    // Load the first DictionaryWord (should be base word if occured in Dictionary)
     auto root = this->_records.begin();
+    // For baseWord length only the dict's base word should be inserted
     if (this->_baseWord.lenght() != (*root).first)
     {
         std::cout << std::endl << "Base word is not present :(" << std::endl << std::endl;
@@ -86,12 +92,15 @@ void Dictionary::run()
     {
         for (unsigned long i = this->_maxWordSize; i > this->_baseWord.lenght(); --i)
         {
+            // Obtain the elements with specified length (by common key)
             auto lastItem = this->_records.equal_range(i);
 
+            // And iterathe through them
             for (auto it = lastItem.first;
                  it != lastItem.second;
                  it ++)
             {
+                // Clear, PushToList, call findAnnagrams recursive with descent depth
                 this->_result.clear();
                 auto pWord = &(*it).second;
                 this->_result.push_back(std::pair<char, DictionaryWord*> ('\0', pWord));
@@ -99,15 +108,23 @@ void Dictionary::run()
             }
         }
 
+        // Walked for whole dictionary - no result
         std::cout << std::endl << "Not Found :(" << std::endl << std::endl;
     }
     catch (anagram_found_exception &)
     {
+        // If exception was raised - anagram transition was found.
+        // For now, at the top exist the longest anagram with no transit letter.
+        // Its necessary to find the first transit letter because exception was raised
+        // if the current depth was reaching the lenght of base word (base word is not listed)
         auto firstElement = this->_result.back();
 
         std::cout << std::endl << "Found!" << std::endl << std::endl;
+
+        // Substract to obtain the transit letter between last element and base word...
         std::cout << this->_baseWord.word() << " + " << *firstElement.second - this->_baseWord << " = ";
 
+        // Prompt transit
         for (auto it = this->_result.rbegin();
              it != this->_result.rend();
              it ++)
@@ -149,6 +166,9 @@ void Dictionary::setBaseWord(const std::string &word)
     this->_maxWordSize = word.size();
 }
 
+//!
+//! \brief Dictionary::Dictionary
+//!
 Dictionary::Dictionary()
     : _baseWord (std::string(""))
     , _maxWordSize (0)
@@ -160,26 +180,36 @@ Dictionary::Dictionary()
 //! \brief Dictionary::findAnnagrams
 //! Performs #3 stage of algorithm described in readme.md file.
 //! Recursive method.
-//! \details
-//! \param word
-//! \param depth
+//! \details findAnnagrams method searches the dictionary with specified depth
+//! and substract all obtained elements from dictionary word argument. If
+//! there's a possible transition (exists a transit letter between two elements)
+//! the word is pushed to the result list. If not - its poped out. When the base word
+//! was found in dictionary, the 'anagram_found_exception' is raised
+//! \param word Current word (depth+1)
+//! \param depth Current depth
 //!
 void Dictionary::findAnnagrams(DictionaryWord *word, unsigned long depth) noexcept (false)
 {
+    // For baseWord length only the dict's base word should be inserted
     if (this->_baseWord.lenght() == depth)
-        throw anagram_found_exception();
+        throw anagram_found_exception(); // found - throw exception - rollback
 
+    // Find all words by depth (common key - current depth)
     auto wordsByDepth = this->_records.equal_range(depth);
 
     for (auto it = wordsByDepth.first;
          it != wordsByDepth.second;
          it ++)
     {
+        // Try to find transient letter by calling operator-()
         char addedLetter = *word - (*it).second;
         if (addedLetter)
         {
+            // If exists - push transient letter and current loop word to list
             this->_result.push_back(std::pair<char, DictionaryWord*> (addedLetter, &((*it).second)));
+            // Call findAnnagrams recursively
             findAnnagrams(&(*it).second, depth - 1);
+            // If exception was not thrown - pop stack.
             this->_result.pop_back();
         }
     }

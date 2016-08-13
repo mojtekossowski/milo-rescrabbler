@@ -13,7 +13,7 @@ Rescrabler algorithm can be divided into 3 parts:
 
 2. Iteration through the multimap (int, DictionaryWord) in descending order (longest word first). If the solution for the currently longest word was not found, algorithm will reset the result stack and continue once again for previous longest word (reverse iterator).
 
-3. Recursive call of findAnnagrams method with descending depth. Each item's letter stack is compared with the adjacent one. If there's possibility to transit (all letters are covered), the overloaded substraction operators returns the letter which will be removed to obtain the deeper word (with less letters).
+3. Recursive call of findAnnagrams searches the dictionary with specified depth and substract all obtained elements from dictionary word argument. If there's a possible transition (exists a transit letter between two elements) the word is pushed to the result list. If not - its poped out. When the base word was found in dictionary, the 'anagram_found_exception' is raised.
 
 If number of letters of beginning word matches currently processing word, the algorithm is stopped.
 Then, to obtain the result, just reverse iteration over result records should be performed.
@@ -28,9 +28,10 @@ Result for 'ail' and unix dict:
 
 ### Usage
 * Commands:
+
         `--dict <filepath>  loads file`
         `--default          uses default dictionary (from task)`
         `--depth            sets begin word (prompt)`
-* Mix of commands will also work. ex. --dict --default will look
+* Mix of commands will also work. ex. `--dict --default` will look
     for 'ail' in ./assets/words (unix dictionary from /usr/share/dict).
-* All necessary info is provided by command prompt (including benchmark from std::chrono).
+* All necessary info is provided by command prompt (including benchmark from `std::chrono`).
