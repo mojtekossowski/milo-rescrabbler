@@ -29,9 +29,10 @@ Result for 'ail' and unix dict:
 ### Usage
 * Commands:
 
-        `--dict <filepath>  loads file`
-        `--default          uses default dictionary (from task)`
-        `--depth            sets begin word (prompt)`
+           `--dict <filepath>  loads file`
+           `--default          uses default dictionary (from task)`
+           `--base             sets begin word (prompt)`
+
 * Mix of commands will also work. ex. `--dict --default` will look
     for 'ail' in ./assets/words (unix dictionary from /usr/share/dict).
 * All necessary info is provided by command prompt (including benchmark from `std::chrono`).
