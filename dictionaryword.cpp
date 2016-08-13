@@ -17,28 +17,6 @@ DictionaryWord::DictionaryWord(const std::string &baseWord)
 }
 
 //!
-//! \brief DictionaryWord::DictionaryWord
-//! \details Constructor of DictionaryWord for >>word<<,
-//! regarding to >>baseWord<<. Automaticaly generates LettersStack.
-//! Throws an 'anagram_not_matched' exception if
-//! >>word<< LettersStack does not contain >>baseWord<< LettersStack.
-//! \param word current parsing word
-//! \param baseWord base word
-//!
-DictionaryWord::DictionaryWord(const std::string &word,
-                               DictionaryWord &baseWord) noexcept(false)
-    : _word (std::move(word))
-    , _stack (LettersStack(this->_word))
-{
-    // If currently created word doesn't match the baseWord
-    if (!this->_stack.contains(baseWord.stack()))
-    {
-        // Throw an exception (revert object creation) - handled upwards.
-        throw anagram_not_matched();
-    }
-}
-
-//!
 //! \brief DictionaryWord::operator -
 //! \details Returns character difference between two words stored in dictionary.
 //! The difference mechanism works always for size(this) - size(another) = 1.
@@ -49,6 +27,17 @@ DictionaryWord::DictionaryWord(const std::string &word,
 char DictionaryWord::operator-(DictionaryWord &another) const
 {
     return this->_stack - another.stack();
+}
+
+//!
+//! \brief DictionaryWord::contains
+//! Function returns matching criteria
+//! \param another
+//! \return
+//!
+bool DictionaryWord::contains(DictionaryWord &another)
+{
+    return this->_stack.contains(another.stack());
 }
 
 //!

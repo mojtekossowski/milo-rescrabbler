@@ -21,6 +21,7 @@ public:
                    DictionaryWord &baseWord) noexcept (false);
 
     char operator-(DictionaryWord &another) const;
+    bool contains(DictionaryWord &another);
 
     std::string &word();
     unsigned long lenght() const;

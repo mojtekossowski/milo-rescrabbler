@@ -227,30 +227,25 @@ void Dictionary::findAnnagrams(DictionaryWord *word, unsigned long depth) noexce
 //!
 void Dictionary::addWordToDictionary(const std::string &word)
 {
-    try
+    // If the word lenght is smaller than the baseWord length - ommit record
+    if (word.length() < this->_baseWord.word().length())
+        return;
+
+    // If the word lenght is equal to the baseWord length
+    // and it is not the base word - ommit record
+    if ((word.length() == this->_baseWord.word().length()))
     {
-        // If the word lenght is smaller than the baseWord length - ommit record
-        if (word.length() < this->_baseWord.word().length())
+        if (word != this->_baseWord.word())
             return;
-
-        // If the word lenght is equal to the baseWord length
-        // and it is not the base word - ommit record
-        if ((word.length() == this->_baseWord.word().length()))
-        {
-            if (word != this->_baseWord.word())
-                return;
-        }
-
-        // Try to creade Dictionary word regarding to base word
-        auto record = DictionaryWord(word, this->_baseWord);
-        // If no exception was thrown - move the record to multimap.
-        this->_records.insert(std::pair<int, DictionaryWord> (word.size(), std::move(record)));
-        // Updae max word size
-        this->_maxWordSize = std::max(this->_maxWordSize, word.size());
     }
-    catch (anagram_not_matched &)
-    {
-        // If word doesn't contains all letters of BaseWord...
-        // Do nothing, rollback stack and try to parse next word from dictionary ;)
-    }
+
+    // Try to creade Dictionary word regarding to base word
+    auto record = DictionaryWord(word);
+    // If the new record don't cover the base word - ommit record
+    if (!record.contains(this->_baseWord))
+        return;
+
+    this->_records.insert(std::pair<int, DictionaryWord> (word.size(), std::move(record)));
+    // Updae max word size
+    this->_maxWordSize = std::max(this->_maxWordSize, word.size());
 }
