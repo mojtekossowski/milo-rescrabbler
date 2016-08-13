@@ -1,7 +1,6 @@
 #include "dictionaryword.h"
 
 #include <iostream>
-#include "exceptions.h"
 
 //!
 //! \brief DictionaryWord::DictionaryWord
