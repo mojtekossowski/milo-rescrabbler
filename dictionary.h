@@ -9,6 +9,18 @@
 
 //!
 //! \brief The Dictionary class
+//! The main Dictionary class - performs algorithm, loads
+//! dictionary and stores the data.
+//! \details The dictionary multimap
+//! (std::multimap<unsigned long, DictionaryWord> _records)
+//! contains ascending, sorted and categorized by word size
+//! dictionary word.
+//!
+//! Follow the manual in such order:
+//! @see parseDictionary
+//! @see addWordToDictionary
+//! @see run
+//! @see findAnnagrams
 //!
 class Dictionary
 {
@@ -20,6 +32,7 @@ public:
     void clearDictionary();
 
     void run();
+    unsigned long depth() const;
 
     DictionaryWord &baseWord();
     void setBaseWord(const std::string &word);

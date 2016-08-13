@@ -41,6 +41,7 @@ void Dictionary::parseDictionary(const std::vector<std::string> &dictionary)
 
 //!
 //! \brief Dictionary::parseDictionary
+//! Parses dictionary from file (specified by user or defaulted)
 //! \param filepath
 //!
 void Dictionary::parseDictionary(const std::string &filepath)
@@ -58,6 +59,9 @@ void Dictionary::parseDictionary(const std::string &filepath)
     }
 }
 
+//!
+//! \brief Dictionary::clearDictionary
+//! Clears dictionary
 void Dictionary::clearDictionary()
 {
     this->_records.clear();
@@ -65,6 +69,10 @@ void Dictionary::clearDictionary()
 
 //!
 //! \brief Dictionary::run
+//! The algorithm execution method.
+//! Performs #3 stage of algorithm described in readme.md file
+//! \details
+//!
 //!
 void Dictionary::run()
 {
@@ -78,7 +86,6 @@ void Dictionary::run()
     {
         for (unsigned long i = this->_maxWordSize; i > this->_baseWord.lenght(); --i)
         {
-
             auto lastItem = this->_records.equal_range(i);
 
             for (auto it = lastItem.first;
@@ -115,6 +122,15 @@ void Dictionary::run()
 }
 
 //!
+//! \brief Dictionary::depth
+//! \return Depth of found anagrams
+//!
+unsigned long Dictionary::depth() const
+{
+    return this->_result.size();
+}
+
+//!
 //! \brief Dictionary::baseWord
 //! \return
 //!
@@ -142,6 +158,9 @@ Dictionary::Dictionary()
 
 //!
 //! \brief Dictionary::findAnnagrams
+//! Performs #3 stage of algorithm described in readme.md file.
+//! Recursive method.
+//! \details
 //! \param word
 //! \param depth
 //!

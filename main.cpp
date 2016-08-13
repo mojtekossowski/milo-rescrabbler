@@ -16,7 +16,7 @@ int displayHelp()
     std::cout << "Commands:" << std::endl << std::endl
               << "    --dict <filepath>  loads file" << std::endl
               << "    --default          uses default dictionary (from task)" << std::endl
-              << "    --begin <word>     sets begin world" << std::endl << std::endl
+              << "    --base             sets begin word (prompt)" << std::endl << std::endl
               << "Mix of commands will also work. ex. --dict --default will look " << std::endl
               << "for 'ail' in ./assets/words (unix dictionary from /usr/share/dict)" << std::endl << std::endl;
 
@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
     int helpIndex = arguments.indexOf("--help");
     int defaultIndex = arguments.indexOf("--default");
     int dictIndex = arguments.indexOf("--dict");
-    int beginIndex = arguments.indexOf("--begin");
+    int baseIndex = arguments.indexOf("--base");
 
     // If help occured
     if (helpIndex > 0)
@@ -50,10 +50,10 @@ int main(int argc, char *argv[])
 
     // If '--begin' option was specified - prompt
     // the lookop word from user.
-    if (beginIndex > 0)
+    if (baseIndex > 0)
     {
         std::string word;
-        std::cout << "Enter beginning word: ";
+        std::cout << "Enter the base word: ";
         std::cin >> word;
 
         t0 = std::chrono::high_resolution_clock::now();
@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
     if (defaultIndex > 0)
     {
         // And not provides '--begin' option - assign 'ail' as baseWord
-        if (beginIndex < 0)
+        if (baseIndex < 0)
             d->setBaseWord("ail");
 
         // If dictionary was not specified - load default dictionary
@@ -110,7 +110,8 @@ int main(int argc, char *argv[])
     auto t1 = std::chrono::high_resolution_clock::now();
     auto dt = std::chrono::duration_cast<std::chrono::milliseconds>(t1-t0).count();
 
-    std::cout << std::endl << "Operation took " << dt << " milliseconds." << std::endl;
+    std::cout << std::endl << "Operation took " << dt << " milliseconds."  << std::endl
+              << "Anagram Transition/Derivation Depth: " << d->depth() << std::endl << std::endl;
 
     return 0;
 }
