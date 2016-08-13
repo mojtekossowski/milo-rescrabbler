@@ -5,7 +5,8 @@
 #include "exceptions.h"
 
 //!
-//! \brief Dictionary::dictionarySingleton initialize to nullptr
+//! \brief Dictionary::dictionarySingleton
+//! Initialize singleton to nullptr at startup
 //!
 Dictionary *Dictionary::dictionarySingleton = nullptr;
 
@@ -22,8 +23,9 @@ Dictionary *Dictionary::getInstance()
 }
 
 //!
-//! \brief Dictionary::parseDictionary method parses basic task dictionary
-//! \param dictionary task dictionarys
+//! \brief Dictionary::parseDictionary
+//! Parses default dictionary contained in vector
+//! \param dictionary Task dictionary
 //!
 void Dictionary::parseDictionary(const std::vector<std::string> &dictionary)
 {
@@ -37,6 +39,10 @@ void Dictionary::parseDictionary(const std::vector<std::string> &dictionary)
     });
 }
 
+//!
+//! \brief Dictionary::parseDictionary
+//! \param filepath
+//!
 void Dictionary::parseDictionary(const std::string &filepath)
 {
     std::cout << "Begin loading dictionary from " << filepath << "..." << std::endl;
@@ -57,6 +63,9 @@ void Dictionary::clearDictionary()
     this->_records.clear();
 }
 
+//!
+//! \brief Dictionary::run
+//!
 void Dictionary::run()
 {
     auto root = this->_records.begin();
@@ -105,11 +114,19 @@ void Dictionary::run()
     }
 }
 
+//!
+//! \brief Dictionary::baseWord
+//! \return
+//!
 DictionaryWord &Dictionary::baseWord()
 {
     return this->_baseWord;
 }
 
+//!
+//! \brief Dictionary::setBaseWord
+//! \param word
+//!
 void Dictionary::setBaseWord(const std::string &word)
 {
     this->_baseWord = std::move(DictionaryWord(word));
@@ -123,6 +140,11 @@ Dictionary::Dictionary()
 
 }
 
+//!
+//! \brief Dictionary::findAnnagrams
+//! \param word
+//! \param depth
+//!
 void Dictionary::findAnnagrams(DictionaryWord *word, unsigned long depth) noexcept (false)
 {
     if (this->_baseWord.lenght() == depth)
@@ -144,25 +166,42 @@ void Dictionary::findAnnagrams(DictionaryWord *word, unsigned long depth) noexce
     }
 }
 
+//!
+//! \brief Dictionary::addWordToDictionary
+//! Performs #1 stage of algorithm described in readme.md file.
+//! \details This method adds word from file/default settings to dictionary.
+//! For assumption, the baseWord has the shortest length
+//! And words with the same or smaller length should be
+//! not added to dictionary. Only the word which LettersStack covers
+//! the baseWord stack should be added (and the base word itself, if occured).
+//! \param word
+//!
 void Dictionary::addWordToDictionary(const std::string &word)
 {
     try
     {
+        // If the word lenght is smaller than the baseWord length - ommit record
         if (word.length() < this->_baseWord.word().length())
             return;
 
+        // If the word lenght is equal to the baseWord length
+        // and it is not the base word - ommit record
         if ((word.length() == this->_baseWord.word().length()))
         {
             if (word != this->_baseWord.word())
                 return;
         }
 
+        // Try to creade Dictionary word regarding to base word
         auto record = DictionaryWord(word, this->_baseWord);
+        // If no exception was thrown - move the record to multimap.
         this->_records.insert(std::pair<int, DictionaryWord> (word.size(), std::move(record)));
+        // Updae max word size
         this->_maxWordSize = std::max(this->_maxWordSize, word.size());
     }
-    catch (...)
+    catch (anagram_not_matched &)
     {
-        // Gotta catch'em all ;D
+        // If word doesn't contains all letters of BaseWord...
+        // Do nothing, rollback stack and try to parse next word from dictionary ;)
     }
 }

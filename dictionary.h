@@ -7,6 +7,9 @@
 
 #include "dictionaryword.h"
 
+//!
+//! \brief The Dictionary class
+//!
 class Dictionary
 {
 public:
@@ -22,14 +25,19 @@ public:
     void setBaseWord(const std::string &word);
 
 private:
-    Dictionary();
+    Dictionary(); // Yeah, private ctor. I am Singleton, man!
     void findAnnagrams(DictionaryWord *word, unsigned long depth) noexcept (false);
     void addWordToDictionary(const std::string &word);
 
+    // Pointer to global instance
     static Dictionary *dictionarySingleton;
+    // All records - Length:DictionaryWord
     std::multimap<unsigned long, DictionaryWord> _records;
+    // Base lookup word
     DictionaryWord _baseWord;
+    // The winning result - AddedLetter:DictionaryWord
     std::list<std::pair<char, DictionaryWord*> > _result;
+    // Max word size in dictionary - needed at beginning
     unsigned long _maxWordSize;
 };
 

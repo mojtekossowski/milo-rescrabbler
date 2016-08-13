@@ -4,14 +4,17 @@
 #include <QtCore/qglobal.h>
 #include <map>
 
+//!
+//! \brief The LettersStack class
+//! Represents the letter stack with several methods:
+//! * substraction of neariest words
+//!
 class LettersStack
 {
 public:
     explicit LettersStack(const std::string &word);
 
     std::map<char, unsigned int> &stackedLetters();
-
-    unsigned int size() const;
 
     bool contains (LettersStack &another);
     char operator-(LettersStack &another) const;

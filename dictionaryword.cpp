@@ -4,7 +4,9 @@
 #include "exceptions.h"
 
 //!
-//! \brief DictionaryWord::DictionaryWord ctor of base word
+//! \brief DictionaryWord::DictionaryWord
+//! \details Constructor of DictionaryWord for >>baseWord<<
+//! automaticaly generates LetterStack.
 //! \param baseWord base word
 //!
 DictionaryWord::DictionaryWord(const std::string &baseWord)
@@ -15,8 +17,11 @@ DictionaryWord::DictionaryWord(const std::string &baseWord)
 }
 
 //!
-//! \brief DictionaryWord::DictionaryWord ctor depending on base word
-//! throws an anagram_not_matched if word does not contain base
+//! \brief DictionaryWord::DictionaryWord
+//! \details Constructor of DictionaryWord for >>word<<,
+//! regarding to >>baseWord<<. Automaticaly generates LettersStack.
+//! Throws an 'anagram_not_matched' exception if
+//! >>word<< LettersStack does not contain >>baseWord<< LettersStack.
 //! \param word current parsing word
 //! \param baseWord base word
 //!
@@ -25,16 +30,21 @@ DictionaryWord::DictionaryWord(const std::string &word,
     : _word (std::move(word))
     , _stack (LettersStack(this->_word))
 {
+    // If currently created word doesn't match the baseWord
     if (!this->_stack.contains(baseWord.stack()))
     {
+        // Throw an exception (revert object creation) - handled upwards.
         throw anagram_not_matched();
     }
 }
 
 //!
-//! \brief DictionaryWord::operator - (uses stack difference)
-//! \param another another DictionaryWord
-//! \return letter diff
+//! \brief DictionaryWord::operator -
+//! \details Returns character difference between two words stored in dictionary.
+//! The difference mechanism works always for size(this) - size(another) = 1.
+//! @see LetterStack::operator-() for more details.
+//! \param another Another DictionaryWord
+//! \return Letter diff
 //!
 char DictionaryWord::operator-(DictionaryWord &another) const
 {
@@ -43,7 +53,7 @@ char DictionaryWord::operator-(DictionaryWord &another) const
 
 //!
 //! \brief DictionaryWord::word
-//! \return word
+//! \return Printable word (from dictionary)
 //!
 std::string &DictionaryWord::word()
 {
@@ -52,7 +62,7 @@ std::string &DictionaryWord::word()
 
 //!
 //! \brief DictionaryWord::lenght
-//! \return words length
+//! \return Word's length (from dictionary)
 //!
 unsigned long DictionaryWord::lenght() const
 {
@@ -61,7 +71,7 @@ unsigned long DictionaryWord::lenght() const
 
 //!
 //! \brief DictionaryWord::stack
-//! \return letters stack
+//! \return Letters stack
 //!
 LettersStack &DictionaryWord::stack()
 {

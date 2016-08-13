@@ -6,6 +6,12 @@
 
 #include "lettersstack.h"
 
+//!
+//! \brief The DictionaryWord class
+//! Represent single dictionary word with:
+//! * readable word
+//! * stack of letter's occurance
+//!
 class DictionaryWord
 {
 public:
@@ -21,7 +27,9 @@ public:
     LettersStack &stack();
 
 private:
+    // Printable word
     std::string _word;
+    // Letters stack
     LettersStack _stack;
 };
 
