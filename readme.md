@@ -21,9 +21,11 @@ Then, to obtain the result, just reverse iteration over result records should be
 I tried to use smartpointers instead of const references / references / raw pointers, but it has negative impact on benchmark result (ca ~1.5s)
 
 ### Build
-'qmake
- make
- make install'
+`qmake`
+
+`make`
+
+`make install`
 
 ### Benchmark
 For beginning 'ail' and unix built-in /usr/share/dict (american-english, ~100k records) algorithm takes ~1.64 (previously 5.9 - in cause of bug) to find the longest annagram transition (derivation).
